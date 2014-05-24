@@ -14,6 +14,7 @@ set tabstop=2
 set softtabstop=2
 set shiftwidth=2
 set expandtab
+set autoindent
 "set noimdisable
 "set iminsert=0
 "set imsearch=0
@@ -21,7 +22,7 @@ set expandtab
 set backspace=indent,eol,start
 
 "custom maps 
-:map <C-o> :CommandT<CR>
+":map <C-o> :CommandT<CR>
 :let mapleader = ","
 map <Leader>t :call RunCurrentSpecFile()<CR>
 
@@ -33,7 +34,7 @@ let g:user_zen_settings = {
 let g:indent_guides_guide_size = 1
 
 if has("gui_running")
-colorscheme desert
+ colorscheme desert
   set bs=2
     set ruler
       set gfn=Monaco:h16
@@ -61,6 +62,7 @@ Bundle 'mattn/zencoding-vim'
 Bundle 'msanders/snipmate.vim'
 Bundle 'vim-scripts/The-NERD-Commenter'
 Bundle 'wincent/Command-T'
+Bundle 'scrooloose/nerdtree'
 " indent guides
 " Bundle 'nathanaelkane/vim-indent-guides'
 
