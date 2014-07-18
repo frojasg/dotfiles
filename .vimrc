@@ -1,4 +1,5 @@
  " runtime flavors/bootstrap.vim
+set term=xterm-256color
 set nocompatible              " be iMproved
 filetype off                  " required!
 
@@ -20,6 +21,8 @@ set autoindent
 "set imsearch=0
 "set noswapfile
 set backspace=indent,eol,start
+set hlsearch                    " highlight search terms
+set incsearch                   " show search matches as you type
 
 "custom maps 
 ":map <C-o> :CommandT<CR>
@@ -40,6 +43,7 @@ if has("gui_running")
       set gfn=Monaco:h16
   set shell=/bin/bash
 endif
+
 
 " My bundles here:
 "
@@ -63,6 +67,7 @@ Bundle 'msanders/snipmate.vim'
 Bundle 'vim-scripts/The-NERD-Commenter'
 Bundle 'wincent/Command-T'
 Bundle 'scrooloose/nerdtree'
+Bundle 'flazz/vim-colorschemes'
 " indent guides
 " Bundle 'nathanaelkane/vim-indent-guides'
 
@@ -81,3 +86,50 @@ filetype plugin indent on     " required!
 "
 " see :h vundle for more details or wiki for FAQ
 " NOTE: comments after Bundle commands are not allowed.
+
+" Search for selected text.
+" http://vim.wikia.com/wiki/VimTip171
+let s:save_cpo = &cpo | set cpo&vim
+if !exists('g:VeryLiteral')
+  let g:VeryLiteral = 0
+endif
+
+function! s:VSetSearch(cmd)
+  let old_reg = getreg('"')
+  let old_regtype = getregtype('"')
+  normal! gvy
+  if @@ =~? '^[0-9a-z,_]*$' || @@ =~? '^[0-9a-z ,_]*$' && g:VeryLiteral
+    let @/ = @@
+  else
+    let pat = escape(@@, a:cmd.'\')
+    if g:VeryLiteral
+      let pat = substitute(pat, '\n', '\\n', 'g')
+    else
+      let pat = substitute(pat, '^\_s\+', '\\s\\+', '')
+      let pat = substitute(pat, '\_s\+$', '\\s\\*', '')
+      let pat = substitute(pat, '\_s\+', '\\_s\\+', 'g')
+    endif
+    let @/ = '\V'.pat
+  endif
+  normal! gV
+  call setreg('"', old_reg, old_regtype)
+endfunction
+
+vnoremap <silent> * :<C-U>call <SID>VSetSearch('/')<CR>/<C-R>/<CR>
+vnoremap <silent> # :<C-U>call <SID>VSetSearch('?')<CR>?<C-R>/<CR>
+vmap <kMultiply> *
+
+nmap <silent> <Plug>VLToggle :let g:VeryLiteral = !g:VeryLiteral
+  \\| echo "VeryLiteral " . (g:VeryLiteral ? "On" : "Off")<CR>
+if !hasmapto("<Plug>VLToggle")
+  nmap <unique> <Leader>vl <Plug>VLToggle
+endif
+let &cpo = s:save_cpo | unlet s:save_cpo
+
+
+" set background=dark
+" colorscheme solarized
+colorscheme grb256
+nmap <leader>l :set list!<CR>
+set list listchars=tab:»·,trail:·
+set list!
