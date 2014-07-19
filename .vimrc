@@ -26,7 +26,7 @@ set incsearch                   " show search matches as you type
 
 "custom maps 
 ":map <C-o> :CommandT<CR>
-:let mapleader = ","
+let mapleader = ","
 map <Leader>t :call RunCurrentSpecFile()<CR>
 
 syntax enable
@@ -126,10 +126,30 @@ if !hasmapto("<Plug>VLToggle")
 endif
 let &cpo = s:save_cpo | unlet s:save_cpo
 
+function! <SID>StripTrailingWhitespaces()
+    " Preparation: save last search, and cursor position.
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " Do the business:
+    %s/\s\+$//e
+    " Clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
+endfunction
+nnoremap <silent> <F5> :call <SID>StripTrailingWhitespaces()<CR>
+autocmd BufWritePre *.py,*.js,*,rb :call <SID>StripTrailingWhitespaces()
+
 
 " set background=dark
 " colorscheme solarized
 colorscheme grb256
 nmap <leader>l :set list!<CR>
-set list listchars=tab:»·,trail:·
-set list!
+"set list listchars=tab:»·,trail:·
+set list listchars=tab:▸\ ,eol:¬,trail:·
+
+"Invisible character colors 
+"highlight NonText guifg=#4a4a59
+"highlight SpecialKey guifg=#4a4a59
+
+set hidden
