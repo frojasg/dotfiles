@@ -7,7 +7,7 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 " let Vundle manage Vundle
-" required! 
+" required!
 Bundle 'gmarik/vundle'
 
 " my configure
@@ -24,7 +24,7 @@ set backspace=indent,eol,start
 set hlsearch                    " highlight search terms
 set incsearch                   " show search matches as you type
 
-"custom maps 
+"custom maps
 ":map <C-o> :CommandT<CR>
 let mapleader = ","
 map <Leader>t :call RunCurrentSpecFile()<CR>
@@ -68,6 +68,10 @@ Bundle 'vim-scripts/The-NERD-Commenter'
 Bundle 'wincent/Command-T'
 Bundle 'scrooloose/nerdtree'
 Bundle 'flazz/vim-colorschemes'
+Bundle 'mileszs/ack.vim'
+Bundle 'rking/ag.vim'
+Bundle 'guns/vim-clojure-static'
+Bundle 'tpope/vim-fireplace'
 " indent guides
 " Bundle 'nathanaelkane/vim-indent-guides'
 
@@ -146,10 +150,33 @@ autocmd BufWritePre *.py,*.js,*,rb :call <SID>StripTrailingWhitespaces()
 colorscheme grb256
 nmap <leader>l :set list!<CR>
 "set list listchars=tab:»·,trail:·
-set list listchars=tab:▸\ ,eol:¬,trail:·
+"set list listchars=tab:▸\ ,eol:¬,trail:·
+set list listchars=tab:▸\ ,trail:·
 
-"Invisible character colors 
+"Invisible character colors
 "highlight NonText guifg=#4a4a59
 "highlight SpecialKey guifg=#4a4a59
 
 set hidden
+set number
+
+
+set nocompatible      " We're running Vim, not Vi!
+syntax on             " Enable syntax highlighting
+filetype on           " Enable filetype detection
+filetype indent on    " Enable filetype-specific indenting
+filetype plugin on    " Enable filetype-specific plugins
+
+autocmd FileType ruby compiler ruby
+autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+
+function! InsertCommand(command)
+    redir => output
+    silent execute a:command
+    redir END
+    call feedkeys('i'.substitute(output, '^[\n]*\(.\{-}\)[\n]*$', '\1', 'gm'))
+endfunction
+
+command -nargs=+ Iruby call InsertCommand("ruby " . <q-args>)
