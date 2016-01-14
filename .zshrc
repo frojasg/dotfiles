@@ -29,7 +29,7 @@ ZSH_THEME="ingo"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git)
+plugins=(git ruby jira osx rake)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -39,7 +39,9 @@ alias online_marketing='ssh frojas@173.192.43.66'
 alias be='bundle exec'
 alias bi='http_proxy="http://localhost:3132" bundle install'
 
-export PYTHONPATH=/usr/local/lib/python2.7/site-packages
+#export PYTHONPATH=/usr/local/lib/python2.7/site-packages
+#export PYTHONPATH=/usr/local/lib/python3.4/site-packages
+#VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
 
 export PATH="$PATH:/usr/local/Cellar/smlnj/110.75/libexec/bin"
 
@@ -60,6 +62,10 @@ source $(brew --prefix nvm)/nvm.sh
 #export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 export PATH=~/.rbenv/shims:$PATH
 eval "$(rbenv init -)"
-source $HOME/.zshenv
 
 export JAVA_HOME="`/usr/libexec/java_home -v 1.8`"
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/Devel
+source /usr/local/bin/virtualenvwrapper.sh
+
+#JIRA_RAPID_BOARD="true"
