@@ -20,7 +20,7 @@
 [core]
 	whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
 	pager = less -r
-	excludesfile = /Users/frojas/.gitignore_global
+	excludesfile = /Users/frojas/.gitignore
 	editor = /usr/bin/vim
 [alias]
 	st = status
@@ -35,6 +35,13 @@
   la = !git l --all
   r = !git l -30
   ra = !git r --all
+  flags        = "!FLAG_LOG='--graph --decorate --find-renames --date-order'; \
+                   FLAG_DIFF='--patch --stat --ignore-blank-lines';"
+  glog         = "!git flags; git log $FLAG_LOG --name-status"
+  gslog        = "!git flags; git log $FLAG_LOG --stat"
+  slog         = "!git flags; git log $FLAG_LOG --date=short --format='%C(auto)%h%C(auto)%d %C(bold blue)%ad %an%n        %s%C(reset)'"
+  df           = "!git flags; git diff $FLAG_DIFF"
+  dfc          = "!git flags; git diff $FLAG_DIFF --cached"
 [http]
 	sslVerify = false
 [mergetool "mergefile"]
@@ -42,8 +49,8 @@
 	trustExitCode = false
 [user]
 	name = Francisco Rojas
-#	email = frojas@groupon.com
-  email = frojas@alumnos.utalca.cl
+  email = frojas@groupon.com
+  #email = frojas@alumnos.utalca.cl
 [push]
 	default = tracking
 [github]
