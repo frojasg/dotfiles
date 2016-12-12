@@ -22,6 +22,7 @@ set autoindent
 set backspace=indent,eol,start
 set hlsearch                    " highlight search terms
 set incsearch                   " show search matches as you type
+set clipboard=unnamed
 
 "custom maps
 ":map <C-o> :CommandT<CR>
@@ -73,17 +74,27 @@ Plugin 'vim-erlang/vim-erlang-compiler'
 Plugin 'vim-erlang/vim-erlang-omnicomplete'
 Plugin 'jimenezrick/vimerl'
 Plugin 'rizzatti/dash.vim'
+Plugin 'lambdatoast/elm.vim'
+Plugin 'kchmck/vim-coffee-script'
 Plugin 'elixir-lang/vim-elixir'
+" Snippet
+"Plugin 'carlosgaldino/elixir-snippet'
+Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'tomtom/tlib_vim'
+Plugin 'garbas/vim-snipmate'
+
+" Optional:
+" Plugin 'honza/vim-snippets'
 " indent guides
 " Plugin 'nathanaelkane/vim-indent-guides'
 
 " non-GitHub repos
-Plugin 'git://git.wincent.com/command-t.git'
+" Plugin 'git://git.wincent.com/command-t.git'
 " Git repos on your local machine (i.e. when working on your own plugin)
 " ...
 
 call vundle#end()            " required
-filetype plugin indent on     " required!
+
 "
 " Brief help
 " :BundleList          - list configured bundles
@@ -182,4 +193,31 @@ function! InsertCommand(command)
     call feedkeys('i'.substitute(output, '^[\n]*\(.\{-}\)[\n]*$', '\1', 'gm'))
 endfunction
 
+au BufRead,BufNewFile *.ex,*.exs set filetype=elixir
+au FileType elixir setl sw=2 sts=2 et iskeyword+=!,?
+
+
 command -nargs=+ Iruby call InsertCommand("ruby " . <q-args>)
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" OPEN FILES IN DIRECTORY OF CURRENT FILE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+cnoremap <expr> %% expand('%:h').'/'
+map <leader>e :edit %%
+map <leader>v :view %%
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" RENAME CURRENT FILE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! RenameFile()
+    let old_name = expand('%')
+    let new_name = input('New file name: ', expand('%'), 'file')
+    if new_name != '' && new_name != old_name
+        exec ':saveas ' . new_name
+        exec ':silent !rm ' . old_name
+        redraw!
+    endif
+endfunction
+map <leader>n :call RenameFile()<cr>
+
+
