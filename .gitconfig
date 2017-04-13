@@ -42,6 +42,10 @@
   slog         = "!git flags; git log $FLAG_LOG --date=short --format='%C(auto)%h%C(auto)%d %C(bold blue)%ad %an%n        %s%C(reset)'"
   df           = "!git flags; git diff $FLAG_DIFF"
   dfc          = "!git flags; git diff $FLAG_DIFF --cached"
+
+	head = !git r -1
+	h = !git head
+	hp = "!. ~/.githelpers && show_git_head"
 [http]
 	sslVerify = false
 [mergetool "mergefile"]
