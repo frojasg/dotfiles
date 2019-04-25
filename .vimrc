@@ -77,6 +77,7 @@ Plugin 'rizzatti/dash.vim'
 Plugin 'lambdatoast/elm.vim'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'elixir-lang/vim-elixir'
+Plugin 'fatih/vim-go'
 " Snippet
 "Plugin 'carlosgaldino/elixir-snippet'
 Plugin 'MarcWeber/vim-addon-mw-utils'

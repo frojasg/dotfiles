@@ -1,61 +1,73 @@
-[color]
-	ui = auto
-[color "branch"]
-	current = yellow reverse
-	local = yellow
-	remote = green
-[color "diff"]
-	meta = yellow bold
-	frag = magenta bold
-	old = red bold
-	new = green bold
-[color "status"]
-	added = yellow
-	changed = green
-	untracked = cyan
-[color]
-	ui = true
-[color "diff"]
-	whitespace = red reverse
-[core]
-	whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
-	pager = less -r
-	excludesfile = /Users/frojas/.gitignore
-	editor = /usr/bin/vim
-[alias]
-	st = status
-	ci = commit
-	br = branch
-	co = checkout
-	df = diff
-	lg = log -p
-	outgoingdev = log
-	m = merge --no-ff
-  l = "!source ~/.githelpers && pretty_git_log"
-  la = !git l --all
-  r = !git l -30
-  ra = !git r --all
-  flags        = "!FLAG_LOG='--graph --decorate --find-renames --date-order'; \
-                   FLAG_DIFF='--patch --stat --ignore-blank-lines';"
-  glog         = "!git flags; git log $FLAG_LOG --name-status"
-  gslog        = "!git flags; git log $FLAG_LOG --stat"
-  slog         = "!git flags; git log $FLAG_LOG --date=short --format='%C(auto)%h%C(auto)%d %C(bold blue)%ad %an%n        %s%C(reset)'"
-  df           = "!git flags; git diff $FLAG_DIFF"
-  dfc          = "!git flags; git diff $FLAG_DIFF --cached"
-
-	head = !git r -1
-	h = !git head
-	hp = "!. ~/.githelpers && show_git_head"
-[http]
-	sslVerify = false
-[mergetool "mergefile"]
-	cmd = mergefile --merge --result=$MERGED $LOCAL $BASE $REMOTE
-	trustExitCode = false
 [user]
-	name = Francisco Rojas
-  email = frojas@groupon.com
-  #email = frojas@alumnos.utalca.cl
+	name = Square
+	email = git@squareup.com
 [push]
-	default = tracking
-[github]
-	user = frojasg
+	config = default
+	default = current
+[diff]
+	renames = true
+	indentHeuristic = on
+[status]
+	showUntrackedFiles = all
+[branch]
+	autosetupmerge = true
+[merge]
+	summary = true
+	conflictstyle = diff3
+[rebase]
+	autosquash = true
+	autostash = true
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+	interactive = auto
+[core]
+	excludesfile = ~/.gitignore
+	hooksPath = ~/Development/config_files/dot-files/git_template/hooks
+	editor = vim
+[alias]
+	c = commit -m
+	a = add
+	di = diff
+	dic = diff --cached
+	pl = pull
+	ps = push
+	plre = pull --rebase
+	st = status
+	out = log origin..HEAD
+	ci = commit
+	co = checkout
+	cp = cherry-pick
+	b = branch
+	changed = diff --name-status -r
+	add-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; git add `f`"
+	au = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; git add `f`"
+	ch = diff --name-status -r
+	cosu = !sh -c 'git checkout $0 && git submodule update --init'
+	ignored = "!git ls-files --others --exclude-standard"
+	lg = log --all --graph --abbrev-commit --date=relative --pretty=format:'%C(bold blue)%h - %C(reset)%C(green)(%ar)%C(reset) - %s %C(dim)- %an%C(reset)%C(yellow)%d'
+	lgb = log --graph --abbrev-commit --date=relative --pretty=format:'%C(bold blue)%h - %C(reset)%C(green)(%ar)%C(reset) - %s %C(dim)- %an%C(reset)%C(yellow)%d'
+	track = !sh -c 'git branch --track "$0" "origin/$0" && git checkout "$0"'
+	whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
+	touchdown = merge --no-ff
+	integrate = merge --no-ff
+	td = merge --no-ff
+	lastauthor = log -1 --format='%Cgreen%an <%ae>'
+	reauthor = commit --amend --reset-author -C HEAD
+	publish = push -u
+	tree = log --graph --decorate --pretty=oneline --abbrev-commit
+	hist = log --pretty=format:\"%C(yellow)%h %ad%Creset | %s%C(bold red)%d%Creset [%C(bold blue)%an%Creset]\" --graph --date=short
+	cleanup-branches = !sh -c 'git branch --merged | grep -v ^* | xargs -n 1 git branch -d'
+	pf = push --force-with-lease
+	nit = commit --amend --no-edit
+	praise = blame
+	git = !exec git
+	lb = branch -v --sort=committerdate
+
+[rerere]
+	enabled = 1
+[pull]
+	rebase = true
+[include]
+	path = ~/.gitconfig_local
